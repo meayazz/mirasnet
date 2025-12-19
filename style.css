@@ -1,15 +1,92 @@
-*{box-sizing:border-box;font-family:system-ui,sans-serif}
-body{margin:0;background:#f3f5f7}
-.header{display:flex;align-items:center;gap:.3rem;padding:.6rem 1rem}
-.logo{width:36px;height:36px;border-radius:50%}
-.title{font-size:1.3rem;font-weight:600}
-.container{max-width:520px;margin:auto;padding:1rem}
-.card{background:#fff;border-radius:18px;padding:1rem;box-shadow:0 4px 12px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:.6rem}
-.input, select{width:100%;padding:.65rem;border-radius:14px;border:1px solid #ccc;font-size:1rem;background:#fff}
-label{display:flex;flex-direction:column;font-size:.9rem}
-.btn{width:100%;padding:.7rem;border:none;border-radius:14px;background:#6c8cff;color:#fff;font-size:1rem}
-.btn:hover{opacity:.9}
-.small{font-size:.72rem;color:#666;text-align:center}
-.hidden{display:none}
-.document{font-family:serif;line-height:1.6}
-.footnotes{font-size:.7rem;color:#555;margin-top:1rem}
+/* CSS sadeleştirildi: tek dosya, tek tema */
+
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --primary: #6c8cff;
+  --secondary: #9bb0ff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+input,
+select,
+textarea,
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid #e5e7eb;
+  font-size: 16px;
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--secondary);
+}
+
+.small-text {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 8px;
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 16px;
+}
