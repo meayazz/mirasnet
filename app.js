@@ -175,4 +175,145 @@ function hesapla() {
 <h1>Hüküm ve Koşullar</h1>
 <p>Bu uygulama bilgilendirme amaçlıdır. Resmî veya bağlayıcı fetva yerine geçmez.</p>
 <p>Yerel ve uluslararası regülasyonlara uygunluk gözetilmiştir (GDPR dahil).</p>
+</body></html> * Kaynaklar:
+ * - Kur’an, Nisâ 4/11–12
+ * - İbn Kudâme, el-Muğnî
+ * - Serahsî, el-Mebsût
+ * - İbn Âbidîn, Reddü’l-Muhtâr
+ */
+
+class Heir {
+  constructor(type, count = 1) {
+    this.type = type; // anne, baba, ogul, kiz
+    this.count = count;
+    this.share = 0;
+    this.rule = '';
+  }
+}
+
+class Estate {
+  constructor() {
+    this.heirs = [];
+    this.total = 1; // 1 = tamamı
+  }
+
+  addHeir(heir) {
+    this.heirs.push(heir);
+  }
+}
+
+class FaraidEngine {
+  constructor(estate) {
+    this.estate = estate;
+    this.notes = [];
+  }
+
+  calculate() {
+    this.applyMotherRule();
+    this.applyFatherRule();
+    this.applyChildrenRule();
+    return this.estate.heirs;
+  }
+
+  applyMotherRule() {
+    const mother = this.estate.heirs.find(h => h.type === 'anne');
+    const childrenCount = this.count('ogul') + this.count('kiz');
+    if (!mother) return;
+
+    if (childrenCount > 0) {
+      mother.share = 1/6;
+      mother.rule = 'Anne, çocuk bulunması halinde 1/6 alır (Nisâ 4/11)';
+      this.notes.push('Anne: Nisâ 4/11');
+    } else {
+      mother.share = 1/3;
+      mother.rule = 'Anne, çocuk yoksa 1/3 alır (Nisâ 4/11)';
+      this.notes.push('Anne: Nisâ 4/11');
+    }
+  }
+
+  applyFatherRule() {
+    const father = this.estate.heirs.find(h => h.type === 'baba');
+    const childrenCount = this.count('ogul') + this.count('kiz');
+    if (!father) return;
+
+    if (childrenCount > 0) {
+      father.share = 1/6;
+      father.rule = 'Baba, çocuk bulunması halinde 1/6 alır + asabe (Nisâ 4/11)';
+      this.notes.push('Baba: Nisâ 4/11');
+    } else {
+      father.share = 1; // asabe
+      father.rule = 'Baba, çocuk yoksa asabe olur';
+      this.notes.push('Baba: Asabe kaidesi');
+    }
+  }
+
+  applyChildrenRule() {
+    const sons = this.estate.heirs.find(h => h.type === 'ogul');
+    const daughters = this.estate.heirs.find(h => h.type === 'kiz');
+
+    if (!sons && !daughters) return;
+
+    const totalUnits = (sons ? sons.count * 2 : 0) + (daughters ? daughters.count : 0);
+    const remaining = this.remainingShare();
+
+    if (sons) {
+      sons.share = remaining * (sons.count * 2 / totalUnits);
+      sons.rule = 'Erkek çocuk iki pay alır';
+      this.notes.push('Erkek çocuk: Nisâ 4/11');
+    }
+    if (daughters) {
+      daughters.share = remaining * (daughters.count / totalUnits);
+      daughters.rule = 'Kız çocuk bir pay alır';
+      this.notes.push('Kız çocuk: Nisâ 4/11');
+    }
+  }
+
+  remainingShare() {
+    return 1 - this.estate.heirs.reduce((sum, h) => sum + h.share, 0);
+  }
+
+  count(type) {
+    const h = this.estate.heirs.find(x => x.type === type);
+    return h ? h.count : 0;
+  }
+}
+
+function hesapla() {
+  const estate = new Estate();
+
+  if (document.getElementById('anne').checked)
+    estate.addHeir(new Heir('anne'));
+
+  if (document.getElementById('baba').checked)
+    estate.addHeir(new Heir('baba'));
+
+  const ogul = parseInt(document.getElementById('ogul').value) || 0;
+  if (ogul > 0) estate.addHeir(new Heir('ogul', ogul));
+
+  const kiz = parseInt(document.getElementById('kiz').value) || 0;
+  if (kiz > 0) estate.addHeir(new Heir('kiz', kiz));
+
+  const engine = new FaraidEngine(estate);
+  const heirs = engine.calculate();
+
+  let html = '<h2>Sonuç (Belge)</h2>';
+  heirs.forEach(h => {
+    html += `<p><strong>${h.type}</strong>: ${h.share.toFixed(3)} — ${h.rule}</p>`;
+  });
+
+  document.getElementById('sonuc').innerHTML = html;
+  document.getElementById('sonuc').classList.remove('hidden');
+  document.getElementById('sonuc').scrollIntoView({ behavior: 'smooth' });
+}
+
+---
+
+## 📜 terms.html
+```html
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><title>Hüküm ve Koşullar</title></head>
+<body>
+<h1>Hüküm ve Koşullar</h1>
+<p>Bu uygulama bilgilendirme amaçlıdır. Resmî veya bağlayıcı fetva yerine geçmez.</p>
+<p>Yerel ve uluslararası regülasyonlara uygunluk gözetilmiştir (GDPR dahil).</p>
 </body></html>
