@@ -3,6 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MirasNet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="logo.svg" class="logo" />
+    <span class="title">MirasNet</span>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <input class="input" id="estate" type="number" placeholder="Toplam miras (₺)" />
+      <input class="input" id="isim" type="text" placeholder="Murisin adı" />
+
+      <label><input type="checkbox" id="anne" /> Anne</label>
+      <label><input type="checkbox" id="baba" /> Baba</label>
+      <input class="input" id="es" type="number" min="0" placeholder="Eş sayısı (0-1)" />
+      <input class="input" id="ogul" type="number" min="0" placeholder="Oğul sayısı" />
+      <input class="input" id="kiz" type="number" min="0" placeholder="Kız sayısı" />
+      <input class="input" id="erkekKardes" type="number" min="0" placeholder="Erkek kardeş" />
+      <input class="input" id="kizKardes" type="number" min="0" placeholder="Kız kardeş" />
+
+      <button class="btn" onclick="hesapla()">Hesapla</button>
+
+      <p class="small">Devam ederek <a href="terms.html" target="_blank">hüküm ve koşulları</a> kabul etmiş sayılırsınız.<br/>
+      Tüm mirasçıların Müslüman ve Ehl-i Sünnet olduğu varsayılır.</p>
+    </div>
+
+    <section id="sonuc" class="card hidden"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MirasNet – Feraiz Hesaplayıcı</title>
   <link rel="stylesheet" href="style.css" />
 </head>
