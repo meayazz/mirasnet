@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>MirasNet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>MirasNet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -15,67 +15,58 @@
 
 <main class="container">
 
-  <section class="card">
-    <h2>Murisin Bilgileri</h2>
-    <div class="grid">
-      <label>Adı
-        <input type="text" id="murisAdi">
-      </label>
-      <label>Cinsiyet
-        <select id="murisCinsiyet">
-          <option value="erkek">Erkek</option>
-          <option value="kadin">Kadın</option>
-        </select>
-      </label>
-      <label>Toplam Mal Varlığı
-        <input type="number" min="0" id="mal" value="0">
-      </label>
-    </div>
-  </section>
+<section class="card">
+<h2>Murisin Bilgileri</h2>
+<div class="grid">
+<label>Adı
+<input type="text" id="murisAdi">
+</label>
+<label>Cinsiyet
+<select id="murisCinsiyet">
+<option value="erkek">Erkek</option>
+<option value="kadin">Kadın</option>
+</select>
+</label>
+<label>Toplam Mal Varlığı
+<input type="number" min="0" id="mal" value="0">
+</label>
+</div>
+</section>
 
-  <section class="card">
-    <h2>Mirasçılar</h2>
-    <div class="grid">
-      <label>Eş <small>adet</small>
-        <input type="number" min="0" value="0" id="es">
-      </label>
-      <label>Oğul <small>adet</small>
-        <input type="number" min="0" value="0" id="ogul">
-      </label>
-      <label>Kız <small>adet</small>
-        <input type="number" min="0" value="0" id="kiz">
-      </label>
-      <label>Baba
-        <input type="number" min="0" value="0" id="baba">
-      </label>
-      <label>Anne
-        <input type="number" min="0" value="0" id="anne">
-      </label>
-    </div>
+<section class="card">
+<h2>Mirasçılar</h2>
+<div class="grid">
+<label>Eş <small>adet</small><input type="number" min="0" id="es" value="0"></label>
+<label>Oğul <small>adet</small><input type="number" min="0" id="ogul" value="0"></label>
+<label>Kız <small>adet</small><input type="number" min="0" id="kiz" value="0"></label>
+<label>Baba<input type="number" min="0" id="baba" value="0"></label>
+<label>Anne<input type="number" min="0" id="anne" value="0"></label>
+<label>Dede<input type="number" min="0" id="dede" value="0"></label>
+<label>Öz Kardeş<input type="number" min="0" id="kardes" value="0"></label>
+</div>
+<button onclick="hesapla()">Hesapla</button>
+</section>
 
-    <button onclick="hesapla()">Hesapla</button>
-  </section>
-
-  <section class="card">
-    <h2>Sonuç Tablosu</h2>
-    <table id="sonuc">
-      <thead>
-        <tr>
-          <th>Mirasçı</th>
-          <th>Pay</th>
-          <th>%</th>
-          <th>Tutar</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
+<section class="card">
+<h2>Sonuç Tablosu</h2>
+<table id="sonuc">
+<thead>
+<tr>
+<th>Mirasçı</th>
+<th>Pay</th>
+<th>%</th>
+<th>Tutar</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</section>
 
 </main>
 
 <footer class="footer">
-  <a href="terms.html">Hüküm ve Koşullar</a> ·
-  <a href="manual.html">Rehber</a>
+<a href="terms.html">Hüküm ve Koşullar</a> ·
+<a href="manual.html">Rehber</a>
 </footer>
 
 <script src="app.js"></script>
