@@ -16,25 +16,38 @@
 <main class="container">
 
   <section class="card">
-    <h2>Mirasçı Bilgileri</h2>
-
+    <h2>Murisin Bilgileri</h2>
     <div class="grid">
-      <label>Eş
+      <label>Adı
+        <input type="text" id="murisAdi">
+      </label>
+      <label>Cinsiyet
+        <select id="murisCinsiyet">
+          <option value="erkek">Erkek</option>
+          <option value="kadin">Kadın</option>
+        </select>
+      </label>
+      <label>Toplam Mal Varlığı
+        <input type="number" min="0" id="mal" value="0">
+      </label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Mirasçılar</h2>
+    <div class="grid">
+      <label>Eş <small>adet</small>
         <input type="number" min="0" value="0" id="es">
       </label>
-
-      <label>Oğul
+      <label>Oğul <small>adet</small>
         <input type="number" min="0" value="0" id="ogul">
       </label>
-
-      <label>Kız
+      <label>Kız <small>adet</small>
         <input type="number" min="0" value="0" id="kiz">
       </label>
-
       <label>Baba
         <input type="number" min="0" value="0" id="baba">
       </label>
-
       <label>Anne
         <input type="number" min="0" value="0" id="anne">
       </label>
@@ -50,7 +63,8 @@
         <tr>
           <th>Mirasçı</th>
           <th>Pay</th>
-          <th>Yüzde</th>
+          <th>%</th>
+          <th>Tutar</th>
         </tr>
       </thead>
       <tbody></tbody>
