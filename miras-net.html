@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark" data-madhab="hanefi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>miras.net — Feraiz Hesaplayıcı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TEMA DEĞIŞKENLERI
+   ============================================================ */
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --gold-pale: rgba(201,168,76,0.15);
+  --radius: 18px;
+  --radius-sm: 11px;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --bg-2: #141922;
+  --bg-3: #1b2333;
+  --glass: rgba(255,255,255,0.05);
+  --glass-hover: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.10);
+  --border-gold: rgba(201,168,76,0.35);
+  --text: #ddd8cc;
+  --text-2: #a09888;
+  --text-3: #6e6558;
+  --text-gold: #d4aa55;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --inset: inset 0 1px 0 rgba(255,255,255,0.07);
+  --btn-text: #0a0800;
+  --active-glow: 0 0 0 3px rgba(201,168,76,0.18);
+  --input-bg: rgba(255,255,255,0.04);
+  --input-focus: rgba(201,168,76,0.08);
+  --logo-filter: none;
+}
+
+[data-theme="light"] {
+  --bg: #f4f0e8;
+  --bg-2: #faf7f0;
+  --bg-3: #ffffff;
+  --glass: rgba(255,255,255,0.65);
+  --glass-hover: rgba(255,255,255,0.80);
+  --border: rgba(0,0,0,0.09);
+  --border-gold: rgba(160,110,20,0.35);
+  --text: #2a2318;
+  --text-2: #6b5f4a;
+  --text-3: #9b8e78;
+  --text-gold: #8b6410;
+  --shadow: 0 4px 24px rgba(0,0,0,0.10);
+  --inset: inset 0 1px 0 rgba(255,255,255,0.5);
+  --btn-text: #1a0e00;
+  --active-glow: 0 0 0 3px rgba(160,110,20,0.15);
+  --input-bg: rgba(255,255,255,0.7);
+  --input-focus: rgba(160,110,20,0.05);
+  --logo-filter: brightness(0.6) sepia(0.3);
+}
+
+/* ============================================================
+   GENEL
+   ============================================================ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lora', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+  position: relative;
+  overflow-x: hidden;
+}
+
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(60,90,150,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 85%, rgba(140,90,15,0.10) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+[data-theme="light"] body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(200,170,80,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 85%, rgba(180,140,50,0.06) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 18px 80px;
+}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.85);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+  transition: background var(--transition);
+}
+
+[data-theme="light"] .topbar {
+  background: rgba(244,240,232,0.88);
+}
+
+.logo-area {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.logo-svg {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+}
+
+.logo-text { line-height: 1; }
+
+.logo-brand {
+  font-family: 'Lora', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: -0.5px;
+  display: block;
+  line-height: 1;
+}
+
+[data-theme="light"] .logo-brand { color: #7a5a10; }
+
+.logo-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: var(--text-2);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 3px;
+}
+
+.logo-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 0.88rem;
+  color: var(--gold);
+  font-style: italic;
+  display: block;
+}
+
+[data-theme="light"] .logo-arabic { color: #8b6410; }
+
+.topbar-right {
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* ============================================================
+   AYARLAR PANELİ
+   ============================================================ */
+.settings-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+  color: var(--text-2);
+  position: relative;
+}
+.settings-btn:hover { background: var(--glass-hover); color: var(--text); }
+
+.settings-panel {
+  position: absolute;
+  top: 68px; right: 18px;
+  width: 270px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  z-index: 200;
+  display: none;
+  animation: popIn 0.2s ease both;
+}
+
+.settings-panel.open { display: block; }
+
+@keyframes popIn {
+  from { opacity:0; transform: scale(0.95) translateY(-8px); }
+  to { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.settings-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.setting-row label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: var(--text);
+  font-weight: 400;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative; width: 44px; height: 24px;
+}
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider {
+  position: absolute; inset: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  background: var(--text-2);
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: all var(--transition);
+}
+.toggle input:checked + .toggle-slider { background: var(--gold); border-color: var(--gold); }
+.toggle input:checked + .toggle-slider::after { transform: translateX(20px); background: #fff; }
+
+/* Font size selector */
+.font-size-btns {
+  display: flex; gap: 6px;
+}
+.font-size-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text-2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.font-size-btn.active, .font-size-btn:hover {
+  border-color: var(--border-gold);
+  color: var(--text-gold);
+  background: var(--gold-pale);
+}
+
+.settings-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0;
+}
+
+.settings-note {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   HEADER SECTION
+   ============================================================ */
+.page-header {
+  text-align: center;
+  padding: 40px 0 32px;
+  animation: fadeDown 0.7s ease both;
+}
+
+.page-header .main-title {
+  font-family: 'Lora', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.page-header .arabic-sub {
+  font-family: 'Amiri', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+[data-theme="light"] .page-header .arabic-sub { color: #8b6410; }
+
+.page-header .divider {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 12px auto;
+}
+
+.page-header .desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  letter-spacing: 0.5px;
+}
+
+@keyframes fadeDown { from { opacity:0; transform: translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ============================================================
+   GLASS CARD
+   ============================================================ */
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: visible;
+  transition: background var(--transition), border-color var(--transition);
+  animation: fadeUp 0.6s ease both;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+
+.card-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #9a6e1a, #c9a84c);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; flex-shrink: 0;
+}
+
+.card-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.card-body { padding: 24px; }
+
+/* ============================================================
+   FORM ELEMENTS
+   ============================================================ */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-group.span2 { grid-column: span 2; }
+.form-group.span3 { grid-column: 1 / -1; }
+
+.form-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.form-input, .form-select {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all var(--transition);
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--border-gold);
+  background: var(--input-focus);
+  box-shadow: var(--active-glow);
+}
+
+.form-input::placeholder { color: var(--text-3); }
+
+.form-select option { background: var(--bg-2); color: var(--text); }
+
+.input-prefix-wrap {
+  position: relative;
+}
+.input-prefix {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  pointer-events: none;
+}
+.input-prefix-wrap .form-input { padding-left: 28px; }
+
+/* ============================================================
+   MEZHEP SEKMELERİ
+   ============================================================ */
+.madhab-section {
+  margin-bottom: 20px;
+}
+
+.madhab-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.madhab-label::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: var(--border);
+}
+
+.madhab-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.madhab-tab {
+  padding: 12px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--glass);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.madhab-tab::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+  border-radius: 2px 2px 0 0;
+}
+
+.madhab-tab:hover { background: var(--glass-hover); border-color: var(--border-gold); }
+
+.madhab-tab.active {
+  border-color: var(--border-gold);
+  background: var(--gold-pale);
+}
+
+.madhab-tab.active::before { transform: scaleX(1); }
+
+.madhab-tab .mname {
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  display: block;
+}
+
+.madhab-tab.active .mname { color: var(--text-gold); }
+
+.madhab-tab .marabic {
+  font-family: 'Amiri', serif;
+  font-size: 0.78rem;
+  color: var(--text-2);
+  display: block;
+  margin-top: 1px;
+}
+
+.madhab-tab .mscholar {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  color: var(--text-3);
+  display: block;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   BÖLÜM BAŞLIKLARI
+   ============================================================ */
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-gold);
+  margin: 22px 0 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border-gold), transparent);
+}
+
+/* ============================================================
+   MİRASÇI KARTLARı (TIKLANABİLİR)
+   ============================================================ */
+.heirs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.heir-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.heir-card::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+
+.heir-card:hover {
+  border-color: var(--border-gold);
+  background: var(--glass-hover);
+}
+
+.heir-card.active {
+  border-color: var(--border-gold);
+  background: var(--gold-pale);
+  cursor: default;
+}
+
+.heir-card.active::before { transform: scaleX(1); }
+
+.heir-card.hidden { display: none !important; }
+
+.heir-card-top {
+  padding: 12px 12px 8px;
+  pointer-events: none;
+}
+
+.heir-card-top .hname {
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  display: block;
+}
+
+.heir-card-top .harabic {
+  font-family: 'Amiri', serif;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-style: italic;
+  display: block;
+  margin-top: 1px;
+}
+
+[data-theme="light"] .heir-card-top .harabic { color: #8b6410; }
+
+.heir-card-top .hshare {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  color: var(--text-3);
+  margin-top: 4px;
+  line-height: 1.4;
+  display: block;
+}
+
+.heir-card-input {
+  padding: 0 10px 10px;
+  display: none;
+}
+
+.heir-card.active .heir-card-input { display: block; }
+
+/* Stepper */
+.stepper {
+  display: flex; align-items: center; gap: 0;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 34px;
+}
+
+.stepper-btn {
+  width: 34px; height: 34px; flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-gold);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+  line-height: 1;
+}
+
+.stepper-btn:hover { background: var(--gold-pale); }
+
+.stepper-input {
+  flex: 1; min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: 'Lora', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  padding: 0;
+  cursor: default;
+}
+
+.stepper-input::-webkit-inner-spin-button,
+.stepper-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.stepper-input[type="number"] { -moz-appearance: textfield; }
+
+.heir-close {
+  position: absolute; top: 6px; right: 6px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(200,80,80,0.15);
+  border: none;
+  color: rgba(200,80,80,0.6);
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: none;
+  align-items: center; justify-content: center;
+  transition: all var(--transition);
+  z-index: 2;
+}
+
+.heir-card.active .heir-close { display: flex; }
+.heir-close:hover { background: rgba(200,80,80,0.3); color: rgb(200,80,80); }
+
+/* ============================================================
+   HESAPLA BUTONU
+   ============================================================ */
+.calc-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 24px;
+  background: linear-gradient(135deg, #a07018, #c9a84c, #d4b060);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--btn-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+  box-shadow: 0 4px 20px rgba(201,168,76,0.22);
+}
+
+.calc-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.calc-btn:hover::before { opacity: 1; }
+.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.32); }
+.calc-btn:active { transform: translateY(0); }
+.calc-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ============================================================
+   SONUÇLAR
+   ============================================================ */
+.results-card {
+  display: none;
+  animation: fadeUp 0.5s ease both;
+}
+
+.results-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+
+.results-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  display: flex; align-items: center; gap: 10px;
+}
+
+.results-title span { color: var(--gold); }
+
+.results-meta {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+
+.meta-chip {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-2);
+}
+
+.meta-chip strong {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+[data-theme="light"] .meta-chip strong { color: #7a5a10; }
+
+.reset-btn {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-2);
+  padding: 7px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.reset-btn:hover { border-color: var(--border-gold); color: var(--text); }
+
+/* Adjustment notice */
+.adj-notice {
+  padding: 12px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+
+.adj-notice.avl { color: #e08080; background: rgba(200,80,80,0.05); }
+.adj-notice.radd { color: #80c880; background: rgba(80,200,80,0.05); }
+.adj-notice.noradd { color: #e0a050; background: rgba(200,140,50,0.05); }
+
+/* Hacb notice */
+.hacb-notice {
+  padding: 10px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #e08080;
+  border-top: 1px solid rgba(200,80,80,0.12);
+  display: none;
+  align-items: flex-start; gap: 8px;
+  background: rgba(200,80,80,0.04);
+  flex-wrap: wrap;
+}
+
+/* Heir result rows */
+.heir-result {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background var(--transition);
+}
+
+[data-theme="light"] .heir-result { border-bottom: 1px solid rgba(0,0,0,0.04); }
+
+.heir-result:hover { background: var(--glass-hover); }
+.heir-result:last-child { border-bottom: none; }
+
+.heir-result .rname {
+  flex: 1.5; min-width: 0;
+}
+
+.heir-result .rname strong {
+  display: block;
+  font-family: 'Lora', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.heir-result .rname small {
+  font-family: 'Amiri', serif;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+[data-theme="light"] .heir-result .rname small { color: #8b6410; }
+
+.rcount {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  background: var(--glass);
+  padding: 3px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+
+.rbadge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  padding: 2px 7px; border-radius: 10px;
+  font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rbadge.farz { background: rgba(74,144,217,0.18); color: #7ab3e8; }
+.rbadge.asabe { background: rgba(201,168,76,0.18); color: var(--gold); }
+.rbadge.radd { background: rgba(80,200,80,0.18); color: #80c880; }
+.rbadge.avl { background: rgba(200,80,80,0.18); color: #e08080; }
+.rbadge.combo { background: rgba(150,100,200,0.18); color: #c0a0e0; }
+
+.rfraction {
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-gold);
+  min-width: 52px;
+  text-align: center;
+}
+
+.rbar { flex: 2; max-width: 140px; height: 5px; background: var(--glass); border-radius: 3px; overflow: hidden; }
+.rbar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 1s cubic-bezier(0.4,0,0.2,1); width: 0; }
+
+.ramount {
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 120px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Summary row */
+.summary-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border-gold);
+  background: var(--gold-pale);
+}
+
+.summary-row span { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-2); }
+.summary-row strong { font-family: 'Lora', serif; font-size: 1rem; font-weight: 700; color: var(--gold-light); }
+[data-theme="light"] .summary-row strong { color: #7a5a10; }
+
+/* AI explanation */
+.ai-section { padding: 20px 24px; }
+
+.ai-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-gold);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ai-box {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: var(--text-2);
+  min-height: 60px;
+  position: relative;
+}
+
+.ai-box::before {
+  content: '✦';
+  position: absolute; top: -10px; left: 18px;
+  background: var(--bg-2);
+  padding: 0 6px;
+  color: var(--gold); font-size: 0.7rem;
+}
+
+.disclaimer {
+  padding: 10px 24px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   NOTLAR
+   ============================================================ */
+.notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.note {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  background: var(--glass);
+  border-left: 3px solid;
+}
+.note.gold { border-color: var(--gold); }
+.note.blue { border-color: #4a90d9; }
+.note strong { color: var(--text); }
+
+/* ============================================================
+   AYIRAÇLAR
+   ============================================================ */
+.cards-stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 2px solid rgba(201,168,76,0.25);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Cursor blink */
+.cursor {
+  display: inline-block; width: 2px; height: 14px;
+  background: var(--gold); animation: blink 0.8s infinite; vertical-align: middle; margin-left: 2px;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+/* Madhab info tooltip */
+.madhab-diff {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  padding: 10px 14px;
+  background: var(--glass);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-top: 10px;
+  display: none;
+}
+.madhab-diff.visible { display: block; }
+.madhab-diff strong { color: var(--text-gold); }
+
+/* ============================================================
+   RESPONSİVE
+   ============================================================ */
+@media (max-width: 680px) {
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-group.span2 { grid-column: span 2; }
+  .form-group.span3 { grid-column: 1 / -1; }
+  .heirs-grid { grid-template-columns: repeat(2, 1fr); }
+  .madhab-tabs { grid-template-columns: repeat(2, 1fr); }
+  .rbar { display: none; }
+  .notes-grid { grid-template-columns: 1fr; }
+  .heir-result { flex-wrap: wrap; }
+}
+
+@media (max-width: 420px) {
+  .heirs-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.span2 { grid-column: 1; }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo-area">
+    <!-- Logo SVG: İslami geometrik motif + hilal -->
+    <svg class="logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="11" fill="url(#logoGrad)"/>
+      <!-- Geometrik sekizgen çerçeve -->
+      <path d="M22 6L26 14H38L30 20L33 32L22 26L11 32L14 20L6 14H18L22 6Z" 
+            fill="none" stroke="rgba(255,220,100,0.3)" stroke-width="0.8"/>
+      <!-- İç hilal -->
+      <path d="M19 15C19 15 15 17.5 15 22C15 26.5 19 29 19 29C19 29 13 27.5 13 22C13 16.5 19 15 19 15Z" 
+            fill="#d4aa55" opacity="0.9"/>
+      <!-- Yıldız -->
+      <circle cx="28" cy="22" r="2.5" fill="#d4aa55" opacity="0.8"/>
+      <circle cx="28" cy="22" r="1" fill="#f0d080"/>
+      <!-- Küçük noktalar -->
+      <circle cx="22" cy="10" r="0.8" fill="#d4aa55" opacity="0.5"/>
+      <circle cx="22" cy="34" r="0.8" fill="#d4aa55" opacity="0.5"/>
+      <circle cx="9" cy="22" r="0.8" fill="#d4aa55" opacity="0.5"/>
+      <circle cx="35" cy="22" r="0.8" fill="#d4aa55" opacity="0.5"/>
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="44" y2="44">
+          <stop offset="0%" stop-color="#1a2235"/>
+          <stop offset="100%" stop-color="#0d1117"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="logo-text">
+      <span class="logo-brand">miras.net</span>
+      <span class="logo-sub">Feraiz Hesaplayıcı</span>
+      <span class="logo-arabic">حاسبة الفرائض</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <button class="settings-btn" id="settingsBtn" title="Ayarlar" onclick="toggleSettings()">⚙</button>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-title">Ayarlar</div>
+
+  <div class="setting-row">
+    <label>🌙 Gece Modu</label>
+    <label class="toggle">
+      <input type="checkbox" id="themeToggle" checked onchange="toggleTheme()">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="settings-divider"></div>
+
+  <div class="setting-row" style="flex-direction:column; align-items:flex-start; gap:8px;">
+    <label>Yazı Boyutu</label>
+    <div class="font-size-btns">
+      <button class="font-size-btn" onclick="setFontSize(14)">Küçük</button>
+      <button class="font-size-btn active" onclick="setFontSize(16)">Normal</button>
+      <button class="font-size-btn" onclick="setFontSize(18)">Büyük</button>
+    </div>
+  </div>
+
+  <div class="settings-divider"></div>
+
+  <div class="settings-note">
+    <strong>Para Birimi ve Dil</strong> ana ekrandan değiştirilebilir.<br>
+    Mezhep seçimi aşağıda yer almaktadır.
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="main-title">Feraiz Hesaplayıcı</div>
+    <div class="arabic-sub">حاسبة الفرائض الإسلامية</div>
+    <div class="divider"></div>
+    <div class="desc">Dört Hak Mezhep · Kur'ân-ı Kerîm, Sünnet ve İcmâ'a Dayalı</div>
+  </div>
+
+  <div class="cards-stack">
+
+    <!-- GİRİŞ KARTI -->
+    <div class="glass-card" style="animation-delay:0.05s">
+      <div class="card-header">
+        <div class="card-icon">📜</div>
+        <h2>Tereke ve Mirasçı Bilgileri</h2>
+      </div>
+      <div class="card-body">
+
+        <!-- MEZHEP SEÇİMİ -->
+        <div class="madhab-section">
+          <div class="madhab-label">Mezhep Seçimi</div>
+          <div class="madhab-tabs">
+            <div class="madhab-tab active" data-madhab="hanefi" onclick="selectMadhab('hanefi', this)">
+              <span class="mname">Hanefî</span>
+              <span class="marabic">الحنفية</span>
+              <span class="mscholar">İmâm-ı Âzam</span>
+            </div>
+            <div class="madhab-tab" data-madhab="maliki" onclick="selectMadhab('maliki', this)">
+              <span class="mname">Mâlikî</span>
+              <span class="marabic">المالكية</span>
+              <span class="mscholar">İmam Mâlik</span>
+            </div>
+            <div class="madhab-tab" data-madhab="safii" onclick="selectMadhab('safii', this)">
+              <span class="mname">Şâfiî</span>
+              <span class="marabic">الشافعية</span>
+              <span class="mscholar">İmam Şâfiî</span>
+            </div>
+            <div class="madhab-tab" data-madhab="hanbeli" onclick="selectMadhab('hanbeli', this)">
+              <span class="mname">Hanbelî</span>
+              <span class="marabic">الحنبلية</span>
+              <span class="mscholar">İmam Ahmed</span>
+            </div>
+          </div>
+          <div class="madhab-diff" id="madhabDiff"></div>
+        </div>
+
+        <!-- TEREKE BİLGİLERİ -->
+        <div class="section-title">Tereke Bilgileri</div>
+        <div class="form-grid">
+          <div class="form-group span2">
+            <label class="form-label">Toplam Varlık (Brüt Tereke)</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix" id="currencyPrefix">₺</span>
+              <input type="number" class="form-input" id="estate" placeholder="0.00" min="0" step="any">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Para Birimi</label>
+            <select class="form-select" id="currency" onchange="updateCurrencyPrefix()">
+              <option value="₺">₺ Türk Lirası</option>
+              <option value="$">$ Dolar</option>
+              <option value="€">€ Euro</option>
+              <option value="£">£ Sterlin</option>
+              <option value="﷼">﷼ Riyâl</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cenaze Masrafı</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix" id="cp2">₺</span>
+              <input type="number" class="form-input" id="funeral" placeholder="0.00" min="0" step="any">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Borçlar (Duyûn)</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix" id="cp3">₺</span>
+              <input type="number" class="form-input" id="debts" placeholder="0.00" min="0" step="any">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vasiyyet (max 1/3)</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix" id="cp4">₺</span>
+              <input type="number" class="form-input" id="wasiyya" placeholder="0.00" min="0" step="any">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Miras Bırakan Cinsiyet</label>
+            <select class="form-select" id="deceasedGender" onchange="updateSpouseVisibility()">
+              <option value="male">Erkek (Müteveffa)</option>
+              <option value="female">Kadın (Müteveffiye)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ZEVCEYNİ -->
+        <div class="section-title">Zevceyn · Eş</div>
+        <div class="heirs-grid" id="spouseGrid">
+
+          <div class="heir-card" id="card-koca" data-heir="koca" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event, 'koca')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👤 Koca</span>
+              <span class="harabic">الزوج</span>
+              <span class="hshare">Çocuk yoksa ½ · Çocuk varsa ¼</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'koca')">−</button>
+                <input type="number" class="stepper-input" id="h-koca" value="1" min="1" max="1" data-heir="koca" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'koca')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-kari" data-heir="kari" data-max="4" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event, 'kari')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👤 Karı / Eş</span>
+              <span class="harabic">الزوجة</span>
+              <span class="hshare">Çocuk yoksa ¼ · Çocuk varsa ⅛ (max 4)</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'kari')">−</button>
+                <input type="number" class="stepper-input" id="h-kari" value="1" min="1" max="4" data-heir="kari" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'kari')">+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FÜRÛ -->
+        <div class="section-title">Fürû-i Müntesib · Çocuklar ve Torunlar</div>
+        <div class="heirs-grid">
+          <div class="heir-card" id="card-ogul" data-heir="ogul" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'ogul')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👦 Oğul</span>
+              <span class="harabic">الابن</span>
+              <span class="hshare">Asabe · Kız ile beraber 2:1 oranı</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'ogul')">−</button>
+                <input type="number" class="stepper-input" id="h-ogul" value="1" min="1" data-heir="ogul" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'ogul')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-kiz" data-heir="kiz" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'kiz')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👧 Kız</span>
+              <span class="harabic">البنت</span>
+              <span class="hshare">Tek: ½ · 2+: ⅔ · Oğul ile asabe</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'kiz')">−</button>
+                <input type="number" class="stepper-input" id="h-kiz" value="1" min="1" data-heir="kiz" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'kiz')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-ogulunOglu" data-heir="ogulunOglu" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'ogulunOglu')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👦 Oğlun Oğlu</span>
+              <span class="harabic">ابن الابن</span>
+              <span class="hshare">Oğul yoksa oğul hükmünde</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'ogulunOglu')">−</button>
+                <input type="number" class="stepper-input" id="h-ogulunOglu" value="1" min="1" data-heir="ogulunOglu" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'ogulunOglu')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-ogulunKizi" data-heir="ogulunKizi" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'ogulunKizi')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👧 Oğlun Kızı</span>
+              <span class="harabic">بنت الابن</span>
+              <span class="hshare">1 kız varsa ⅙ · 2+ kız: mahcup</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'ogulunKizi')">−</button>
+                <input type="number" class="stepper-input" id="h-ogulunKizi" value="1" min="1" data-heir="ogulunKizi" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'ogulunKizi')">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USÛL -->
+        <div class="section-title">Usûl · Ana-Baba ve Dedeler</div>
+        <div class="heirs-grid">
+
+          <div class="heir-card" id="card-baba" data-heir="baba" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'baba')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👨 Baba</span>
+              <span class="harabic">الأب</span>
+              <span class="hshare">Oğul ile ⅙ · Kız ile ⅙+asabe · Yalnız: asabe</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'baba')">−</button>
+                <input type="number" class="stepper-input" id="h-baba" value="1" min="1" max="1" data-heir="baba" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'baba')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-anne" data-heir="anne" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'anne')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👩 Anne</span>
+              <span class="harabic">الأم</span>
+              <span class="hshare">Çocuk/kardeş varsa ⅙ · Yoksa ⅓</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'anne')">−</button>
+                <input type="number" class="stepper-input" id="h-anne" value="1" min="1" max="1" data-heir="anne" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'anne')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-dede" data-heir="dede" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'dede')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👴 Dede (Baba tarafı)</span>
+              <span class="harabic">الجد الصحيح</span>
+              <span class="hshare">Baba yoksa baba hükmünde</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'dede')">−</button>
+                <input type="number" class="stepper-input" id="h-dede" value="1" min="1" max="1" data-heir="dede" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'dede')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-babaanne" data-heir="babaanne" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'babaanne')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👵 Babaanne / Nine</span>
+              <span class="harabic">الجدة لأب</span>
+              <span class="hshare">⅙ · Baba varsa mahcup (Hanefî)</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'babaanne')">−</button>
+                <input type="number" class="stepper-input" id="h-babaanne" value="1" min="1" max="1" data-heir="babaanne" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'babaanne')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-anneanne" data-heir="anneanne" data-max="1" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'anneanne')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👵 Anneanne</span>
+              <span class="harabic">أم الأم</span>
+              <span class="hshare">⅙ · Anne varsa mahcup</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'anneanne')">−</button>
+                <input type="number" class="stepper-input" id="h-anneanne" value="1" min="1" max="1" data-heir="anneanne" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'anneanne')">+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- KARDEŞLER -->
+        <div class="section-title">Kardeşler</div>
+        <div class="heirs-grid">
+
+          <div class="heir-card" id="card-tamErkKardes" data-heir="tamErkKardes" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'tamErkKardes')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👦 Tam Erkek Kardeş</span>
+              <span class="harabic">الأخ الشقيق</span>
+              <span class="hshare">Asabe · Füru/baba yoksa</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'tamErkKardes')">−</button>
+                <input type="number" class="stepper-input" id="h-tamErkKardes" value="1" min="1" data-heir="tamErkKardes" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'tamErkKardes')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-tamKizKardes" data-heir="tamKizKardes" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'tamKizKardes')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👧 Tam Kız Kardeş</span>
+              <span class="harabic">الأخت الشقيقة</span>
+              <span class="hshare">Tek: ½ · 2+: ⅔ · Erk.kardeşle: asabe</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'tamKizKardes')">−</button>
+                <input type="number" class="stepper-input" id="h-tamKizKardes" value="1" min="1" data-heir="tamKizKardes" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'tamKizKardes')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-babaBirErkKardes" data-heir="babaBirErkKardes" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'babaBirErkKardes')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👦 Baba Bir Erk. Kardeş</span>
+              <span class="harabic">الأخ لأب</span>
+              <span class="hshare">Asabe · Tam kardeş varsa mahcup</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'babaBirErkKardes')">−</button>
+                <input type="number" class="stepper-input" id="h-babaBirErkKardes" value="1" min="1" data-heir="babaBirErkKardes" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'babaBirErkKardes')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-babaBirKizKardes" data-heir="babaBirKizKardes" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'babaBirKizKardes')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👧 Baba Bir Kız Kardeş</span>
+              <span class="harabic">الأخت لأب</span>
+              <span class="hshare">Tek: ½ · 2+: ⅔ · Tam kız varsa tekmile</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'babaBirKizKardes')">−</button>
+                <input type="number" class="stepper-input" id="h-babaBirKizKardes" value="1" min="1" data-heir="babaBirKizKardes" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'babaBirKizKardes')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-anneBirKardes" data-heir="anneBirKardes" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'anneBirKardes')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">⚥ Anne Bir Kardeş</span>
+              <span class="harabic">الأخ/الأخت لأم</span>
+              <span class="hshare">Tek: ⅙ · 2+: ⅓ (eşit paylaşır)</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'anneBirKardes')">−</button>
+                <input type="number" class="stepper-input" id="h-anneBirKardes" value="1" min="1" data-heir="anneBirKardes" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'anneBirKardes')">+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- UZAK MİRASÇILAR -->
+        <div class="section-title">Uzak Asabe · Amca ve Amca Oğlu</div>
+        <div class="heirs-grid">
+
+          <div class="heir-card" id="card-amca" data-heir="amca" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'amca')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👨 Amca (Tam)</span>
+              <span class="harabic">العم الشقيق</span>
+              <span class="hshare">Asabe · Yakın asabe yoksa</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'amca')">−</button>
+                <input type="number" class="stepper-input" id="h-amca" value="1" min="1" data-heir="amca" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'amca')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="heir-card" id="card-amcaOglu" data-heir="amcaOglu" onclick="activateCard(this)">
+            <button class="heir-close" onclick="deactivateCard(event,'amcaOglu')">✕</button>
+            <div class="heir-card-top">
+              <span class="hname">👦 Amca Oğlu</span>
+              <span class="harabic">ابن العم الشقيق</span>
+              <span class="hshare">Asabe · Amca yoksa devreye girer</span>
+            </div>
+            <div class="heir-card-input">
+              <div class="stepper">
+                <button class="stepper-btn" onclick="stepDown(event,'amcaOglu')">−</button>
+                <input type="number" class="stepper-input" id="h-amcaOglu" value="1" min="1" data-heir="amcaOglu" onchange="validateStepper(this)" onclick="event.stopPropagation()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <button class="stepper-btn" onclick="stepUp(event,'amcaOglu')">+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="notes-grid">
+          <div class="note gold">
+            <strong>Tereke Hesabı:</strong> Cenaze masrafı → Borçlar → Vasiyyet (max ⅓) sırasıyla düşülür. Kalan safi tereke pay edilir.
+          </div>
+          <div class="note blue">
+            <strong>Hanefî:</strong> Dede kardeşleri mahcup eder. <strong>Diğer 3 Mezhep:</strong> Dede kardeşlerle birlikte miras alır (en hayırlı pay hesabı).
+          </div>
+        </div>
+
+        <button class="calc-btn" id="calcBtn" onclick="hesapla()">
+          ⚖&nbsp;&nbsp;MİRASI HESAPLA
+        </button>
+
+      </div>
+    </div>
+
+    <!-- SONUÇLAR KARTI -->
+    <div class="glass-card results-card" id="resultsCard">
+      <div class="results-header">
+        <div class="results-title">
+          <span>✦</span> HESAPLAMA SONUÇLARI
+        </div>
+        <div class="results-meta">
+          <div class="meta-chip">Safi Tereke: <strong id="resSafi"></strong></div>
+          <div class="meta-chip">Mezhep: <strong id="resMadhab"></strong></div>
+          <button class="reset-btn" onclick="resetForm()">↺ Yeni</button>
+        </div>
+      </div>
+
+      <div class="hacb-notice" id="hacbNotice">
+        <span>🚫 Mahcup:</span><span id="hacbList"></span>
+      </div>
+
+      <div class="adj-notice" id="adjNotice"></div>
+
+      <div id="resultsList"></div>
+
+      <div class="summary-row">
+        <span>Dağıtılan Toplam</span>
+        <strong id="resTotal"></strong>
+      </div>
+
+      <div class="ai-section">
+        <div class="ai-label">
+          <span class="spinner" id="aiSpinner"></span>
+          ✦ YAPAY ZEKA AÇIKLAMASI
+        </div>
+        <div class="ai-box" id="aiBox"><span class="cursor"></span></div>
+      </div>
+
+      <div class="disclaimer">
+        * Bu hesaplama yalnızca bilgilendirme amaçlıdır. Kesin miras taksimi için yetkili bir hâkim, müftü veya feraiz uzmanına başvurunuz. Dört hak mezhep arasındaki farklılıklar sonuçları önemli ölçüde etkileyebilir.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let currentMadhab = 'hanefi';
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function toggleSettings() {
+  document.getElementById('settingsPanel').classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('settingsPanel');
+  const btn = document.getElementById('settingsBtn');
+  if (!panel.contains(e.target) && !btn.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = document.getElementById('themeToggle').checked;
+  html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+}
+
+function setFontSize(size) {
+  document.body.style.fontSize = size + 'px';
+  document.querySelectorAll('.font-size-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// ============================================================
+// MEZHEP SEÇİMİ
+// ============================================================
+const madhabDiffs = {
+  hanefi: '<strong>Hanefî Özellik:</strong> Dede, kardeşleri tamamen mahcup (dışlar) eder. Radd uygulanır (eş hariç). Ashâbü\'l-erham (uzak akrabalar) mirasçı olabilir. Umariye/Garraweyn meselesi tatbik edilir.',
+  maliki: '<strong>Mâlikî Özellik:</strong> Dede kardeşlerle birlikte miras alır: dede şu üçünün en hayırlısını alır — (1) Kardeşlerle ortak payı, (2) Bakiyenin ⅓\'ü, (3) Terekenin ⅙\'sı. Radd uygulanmaz; kalan beytülmâle kalır. Ashâbü\'l-erham mirası almaz.',
+  safii: '<strong>Şâfiî Özellik:</strong> Dede kardeşlerle aynı Mâlikî kuralıyla birlikte miras alır. Radd kesinlikle uygulanmaz; fazla beytülmâle devredilir. Ashâbü\'l-erham mirası almaz. Babaanne (baba tarafı) baba varsa dahi ⅙ alabilir.',
+  hanbeli: '<strong>Hanbelî Özellik:</strong> Dede Mâlikî/Şâfiî gibi kardeşlerle birlikte miras alır. Radd uygulanır (eş hariç). Ashâbü\'l-erham mirasçı olabilir. Dede + Tam kız kardeş meselesinde bazı özel hükümler geçerlidir.'
+};
+
+function selectMadhab(key, el) {
+  currentMadhab = key;
+  document.documentElement.setAttribute('data-madhab', key);
+  document.querySelectorAll('.madhab-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const diff = document.getElementById('madhabDiff');
+  diff.innerHTML = madhabDiffs[key];
+  diff.classList.add('visible');
+}
+
+// ============================================================
+// CİNSİYET → EŞ GİZLE/GÖSTER
+// ============================================================
+function updateSpouseVisibility() {
+  const gender = document.getElementById('deceasedGender').value;
+  const kardKoca = document.getElementById('card-koca');
+  const cardKari = document.getElementById('card-kari');
+  if (gender === 'male') {
+    // Koca gizle
+    kardKoca.classList.add('hidden');
+    deactivateCardByKey('koca');
+    cardKari.classList.remove('hidden');
+  } else {
+    // Karı gizle
+    cardKari.classList.add('hidden');
+    deactivateCardByKey('kari');
+    kardKoca.classList.remove('hidden');
+  }
+}
+
+// Başlangıç: erkek → koca gizle
+updateSpouseVisibility();
+
+// ============================================================
+// PARA BİRİMİ
+// ============================================================
+function updateCurrencyPrefix() {
+  const c = document.getElementById('currency').value;
+  ['currencyPrefix','cp2','cp3','cp4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = c;
+  });
+}
+
+// ============================================================
+// HEIR CARD ACTIVATE / DEACTIVATE
+// ============================================================
+function activateCard(card) {
+  if (card.classList.contains('active')) return;
+  card.classList.add('active');
+}
+
+function deactivateCard(e, key) {
+  e.stopPropagation();
+  deactivateCardByKey(key);
+}
+
+function deactivateCardByKey(key) {
+  const card = document.getElementById('card-' + key);
+  if (card) {
+    card.classList.remove('active');
+    const inp = document.getElementById('h-' + key);
+    if (inp) inp.value = 1;
+  }
+}
+
+function stepUp(e, key) {
+  e.stopPropagation();
+  const inp = document.getElementById('h-' + key);
+  const max = parseInt(inp.getAttribute('max')) || 999;
+  const val = parseInt(inp.value) || 1;
+  if (val < max) inp.value = val + 1;
+}
+
+function stepDown(e, key) {
+  e.stopPropagation();
+  const inp = document.getElementById('h-' + key);
+  const val = parseInt(inp.value) || 1;
+  if (val > 1) inp.value = val - 1;
+}
+
+function validateStepper(inp) {
+  const max = parseInt(inp.getAttribute('max')) || 999;
+  const min = parseInt(inp.getAttribute('min')) || 1;
+  let v = parseInt(inp.value);
+  if (isNaN(v) || v < min) v = min;
+  if (v > max) v = max;
+  inp.value = v;
+}
+
+// ============================================================
+// DEĞER OKUMA
+// ============================================================
+function getHeirValues() {
+  const h = {};
+  document.querySelectorAll('.heir-card').forEach(card => {
+    const key = card.dataset.heir;
+    if (card.classList.contains('active') && !card.classList.contains('hidden')) {
+      const inp = document.getElementById('h-' + key);
+      h[key] = Math.max(1, parseInt(inp.value) || 1);
+    } else {
+      h[key] = 0;
+    }
+  });
+  return h;
+}
+
+// ============================================================
+// MATH UTILS
+// ============================================================
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+function lcm(a, b) { const g = gcd(Math.abs(a), Math.abs(b)); return g ? (a / g) * b : 0; }
+
+function formatMoney(amt, cur) {
+  if (amt === 0) return cur + ' 0,00';
+  return cur + ' ' + amt.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fractionStr(n, d) {
+  const g = gcd(Math.abs(n), Math.abs(d));
+  n = n / g; d = d / g;
+  if (d === 1) return '' + n;
+  if (n === d) return '1';
+  return n + '/' + d;
+}
+
+// ============================================================
+// ANA HESAPLAMA ALGORİTMASI
+// ============================================================
+function hesaplaFeraiz(h, safi, madhab) {
+  const shares = {}; // key → { name, arabic, count, n, d, method }
+  const hacbedilen = [];
+  let adjustType = null;
+  let adjustMsg = null;
+
+  // Yardımcılar
+  const hasOgul      = h.ogul > 0;
+  const hasKiz       = h.kiz > 0;
+  const hasOO        = h.ogulunOglu > 0;
+  const hasOK        = h.ogulunKizi > 0;
+  const hasErkFuru   = hasOgul || hasOO;
+  const hasKizFuru   = hasKiz || hasOK;
+  const hasFuru      = hasErkFuru || hasKizFuru;
+  const hasBaba      = h.baba > 0;
+  const hasDede      = h.dede > 0;
+  const hasAnne      = h.anne > 0;
+  const hasBabaOrDede = hasBaba || hasDede;
+  const hasTamErk    = h.tamErkKardes > 0;
+  const hasTamKiz    = h.tamKizKardes > 0;
+  const hasBabaErk   = h.babaBirErkKardes > 0;
+  const hasBabaKiz   = h.babaBirKizKardes > 0;
+  const hasAnneK     = h.anneBirKardes > 0;
+  const hasKardes    = hasTamErk || hasTamKiz || hasBabaErk || hasBabaKiz || hasAnneK;
+
+  // --- HACB KURALLARI ---
+  // Hanefî: Dede kardeşleri mahcup eder
+  const dedeMahcupsBiraderi = (madhab === 'hanefi') && hasDede && !hasBaba;
+  // Baba tüm kardeşleri mahcup eder (4 mezhepte de)
+  const babaHacbsKardes = hasBaba;
+  // Oğul, oğlun oğlunu mahcup eder
+  const ogulHacbsOO = hasOgul;
+  // 2+ kız, oğlun kızını mahcup eder (eğer oğlun oğlu da yoksa)
+  const kkHacbsOK = (h.kiz >= 2) && !hasOO;
+  // Baba, dedeleri mahcup eder
+  const babaHacbsDede = hasBaba;
+  // Anne, anneanneleri mahcup eder
+  const anneHacbsAnneanne = hasAnne;
+  // Baba, babaanneyi mahcup eder (Hanefî/Hanbelî: evet; Mâlikî/Şâfiî: hayır)
+  const babaHacbsBabaanne = (madhab === 'hanefi' || madhab === 'hanbeli') && hasBaba;
+  // Tam kardeş, baba bir kardeşi mahcup eder
+  const tamHacbsBabaBir = hasTamErk;
+  // Füru veya baba/dede, anne bir kardeşi mahcup eder
+  const furuBabaHacbsAnneK = hasFuru || hasBabaOrDede;
+  // Yakın asabe uzak asabeyi mahcup eder
+  const yakinAsabeHacbsAmca = hasErkFuru || hasBabaOrDede || hasTamErk || hasBabaErk;
+  const amcaHacbsAmcaOglu = h.amca > 0;
+
+  // Hacb mesajları
+  if (ogulHacbsOO && hasOO) hacbedilen.push('Oğlun oğlu (oğul tarafından)');
+  if (kkHacbsOK && hasOK) hacbedilen.push('Oğlun kızı (2+ kız tarafından)');
+  if (babaHacbsDede && hasDede) hacbedilen.push('Dede (baba tarafından)');
+  if (anneHacbsAnneanne && h.anneanne > 0) hacbedilen.push('Anneanne (anne tarafından)');
+  if (babaHacbsBabaanne && h.babaanne > 0) hacbedilen.push('Babaanne (baba tarafından)');
+  if (babaHacbsKardes && hasKardes) hacbedilen.push('Kardeşler (baba tarafından)');
+  if (!babaHacbsKardes && dedeMahcupsBiraderi && hasKardes) hacbedilen.push('Kardeşler (dede tarafından — Hanefî)');
+  if (tamHacbsBabaBir && (hasBabaErk || hasBabaKiz)) hacbedilen.push('Baba bir kardeşler (tam kardeş tarafından)');
+  if (furuBabaHacbsAnneK && hasAnneK) hacbedilen.push('Anne bir kardeşler (füru/baba tarafından)');
+  if (yakinAsabeHacbsAmca && h.amca > 0) hacbedilen.push('Amca (yakın asabe tarafından)');
+  if ((yakinAsabeHacbsAmca || amcaHacbsAmcaOglu) && h.amcaOglu > 0) hacbedilen.push('Amca oğlu (amca/yakın asabe tarafından)');
+
+  // Helper fonksiyon
+  function addShare(key, name, arabic, count, n, d, method) {
+    shares[key] = { name, arabic, count, n, d, method };
+  }
+
+  // --- ZEVCEYNİ ---
+  if (h.koca > 0) {
+    if (!hasFuru) addShare('koca', 'Koca', 'الزوج', 1, 1, 2, 'furuz');
+    else addShare('koca', 'Koca', 'الزوج', 1, 1, 4, 'furuz');
+  }
+  if (h.kari > 0) {
+    const cnt = Math.min(h.kari, 4);
+    if (!hasFuru) addShare('kari', 'Karı/Eş', 'الزوجة', cnt, 1, 4, 'furuz');
+    else addShare('kari', 'Karı/Eş', 'الزوجة', cnt, 1, 8, 'furuz');
+  }
+
+  // --- ANNE ---
+  if (hasAnne) {
+    if (hasFuru || (hasKardes && !hasBaba)) {
+      addShare('anne', 'Anne', 'الأم', 1, 1, 6, 'furuz');
+    } else {
+      // Umariye/Garraweyn: Koca + Baba + Anne veya Karı + Baba + Anne durumu
+      const umariye = (h.koca > 0 || h.kari > 0) && hasBaba && !hasFuru && !hasKardes;
+      if (umariye) {
+        // Özel durum: anne bakiyenin 1/3'ü = umariye meselesi
+        // Hesabı "1/3 of remainder" olarak işaretliyoruz, aşağıda düzeltiriz
+        addShare('anne', 'Anne', 'الأم', 1, 1, 3, 'furuz'); // Geçici, düzeltilecek
+        shares['anne']._umariye = true;
+      } else {
+        addShare('anne', 'Anne', 'الأم', 1, 1, 3, 'furuz');
+      }
+    }
+  }
+
+  // --- BABA ---
+  let babaAsabeFlag = false;
+  if (hasBaba) {
+    if (!hasFuru) {
+      babaAsabeFlag = true; // Saf asabe
+    } else if (hasErkFuru) {
+      addShare('baba', 'Baba', 'الأب', 1, 1, 6, 'furuz');
+    } else {
+      // Sadece kız füru: ⅙ furuz + bakiye asabe
+      addShare('baba', 'Baba', 'الأب', 1, 1, 6, 'furuz');
+      babaAsabeFlag = true; // Hem furuz hem asabe
+    }
+  }
+
+  // --- DEDE (baba yoksa) ---
+  let dedeAsabeFlag = false;
+  const dedeActive = hasDede && !babaHacbsDede;
+
+  if (dedeActive) {
+    const dedeVsKardes = !hasBaba && hasKardes && !hasFuru;
+    if (!dedeVsKardes) {
+      if (!hasFuru) {
+        dedeAsabeFlag = true;
+      } else if (hasErkFuru) {
+        addShare('dede', 'Dede', 'الجد الصحيح', 1, 1, 6, 'furuz');
+      } else {
+        addShare('dede', 'Dede', 'الجد الصحيح', 1, 1, 6, 'furuz');
+        dedeAsabeFlag = true;
+      }
+    }
+    // Dede + Kardeş durumu: aşağıda mezhep ayrımıyla işlenecek
+  }
+
+  // --- BÜYÜKANNELER ---
+  if (h.babaanne > 0 && !babaHacbsBabaanne) {
+    addShare('babaanne', 'Babaanne', 'الجدة لأب', 1, 1, 6, 'furuz');
+  }
+  if (h.anneanne > 0 && !anneHacbsAnneanne) {
+    addShare('anneanne', 'Anneanne', 'أم الأم', 1, 1, 6, 'furuz');
+  }
+
+  // --- ANNE BİR KARDEŞ ---
+  if (hasAnneK && !furuBabaHacbsAnneK) {
+    if (h.anneBirKardes === 1) addShare('anneBirKardes', 'Anne Bir Kardeş', 'الأخ/الأخت لأم', 1, 1, 6, 'furuz');
+    else addShare('anneBirKardesler', 'Anne Bir Kardeşler', 'الإخوة لأم', h.anneBirKardes, 1, 3, 'furuz');
+  }
+
+  // =============================================
+  // FURUZ TOPLAMI HESAPLA (LCM)
+  // =============================================
+  function calcFuruzSum() {
+    let den = 1;
+    Object.values(shares).forEach(s => { den = lcm(den, s.d); });
+    if (!den) den = 1;
+    let num = 0;
+    Object.values(shares).forEach(s => { num += s.n * (den / s.d); });
+    return { num, den };
+  }
+
+  // =============================================
+  // ASABE GRUBU OLUŞTURMA
+  // =============================================
+  const asabeList = []; // öncelik sırasına göre
+
+  function addAsabe(key, name, arabic, count, factor) {
+    asabeList.push({ key, name, arabic, count, factor });
+  }
+
+  // Fürû asabe: oğul + kız birlikte
+  const hasActiveFuruAsabe = !kkHacbsOK || hasOO;
+  if (hasOgul || (hasKiz && hasOgul)) {
+    const co = h.ogul; const ck = h.kiz;
+    if (co > 0 && ck > 0) {
+      addAsabe('asabe_ogul', 'Oğul', 'الابن', co, 2);
+      addAsabe('asabe_kiz', 'Kız', 'البنت', ck, 1);
+    } else if (co > 0) {
+      addAsabe('asabe_ogul', 'Oğul', 'الابن', co, 1);
+    }
+    // Kız tek başına → furuz olarak eklendi mi?
+  } else if (hasKiz && !hasOgul) {
+    // Sadece kız(lar): furuz
+    if (!shares['kiz']) {
+      if (h.kiz === 1) addShare('kiz', 'Kız', 'البنت', 1, 1, 2, 'furuz');
+      else addShare('kizlar', 'Kızlar', 'البنات', h.kiz, 2, 3, 'furuz');
+    }
+  }
+
+  // Oğlun oğlu + kızı
+  if (!ogulHacbsOO && hasOO) {
+    const co = h.ogulunOglu; const ck = kkHacbsOK ? 0 : h.ogulunKizi;
+    if (co > 0 && ck > 0) {
+      addAsabe('asabe_oo', 'Oğlun Oğlu', 'ابن الابن', co, 2);
+      addAsabe('asabe_ok', 'Oğlun Kızı', 'بنت الابن', ck, 1);
+    } else if (co > 0) {
+      addAsabe('asabe_oo', 'Oğlun Oğlu', 'ابن الابن', co, 1);
+    }
+  } else if (!ogulHacbsOO && !hasOO && hasOK && !kkHacbsOK) {
+    // Oğlun kızı kendi başına: çeşitli kurallar
+    if (h.kiz === 1) {
+      addShare('asabe_ok', 'Oğlun Kızı', 'بنت الابن', h.ogulunKizi, 1, 6, 'furuz');
+    } else if (!hasKiz) {
+      if (h.ogulunKizi === 1) addShare('asabe_ok', 'Oğlun Kızı', 'بنت الابن', 1, 1, 2, 'furuz');
+      else addShare('asabe_ok_pl', 'Oğlun Kızları', 'بنات الابن', h.ogulunKizi, 2, 3, 'furuz');
+    }
+  }
+
+  // Baba saf asabe
+  if (babaAsabeFlag && !hasErkFuru) {
+    addAsabe('asabe_baba', 'Baba', 'الأب', 1, 1);
+  }
+
+  // Dede + kardeş meselesi (mezhebe göre)
+  if (dedeActive && hasKardes && !hasFuru && !hasBaba) {
+    if (madhab === 'hanefi') {
+      // Hanefî: dede kardeşleri mahcup eder → dede asabe olarak girer
+      addAsabe('asabe_dede', 'Dede', 'الجد الصحيح', 1, 1);
+    } else {
+      // Diğer 3 mezhep: Dede kardeşlerle birlikte, en hayırlı pay kuralı
+      // Bu özel durumu aşağıda işaretliyoruz
+      shares['_dedeKardesOzel'] = true;
+    }
+  } else if (dedeActive && !hasKardes && !hasFuru && !hasBaba) {
+    dedeAsabeFlag = true;
+    addAsabe('asabe_dede', 'Dede', 'الجد الصحيح', 1, 1);
+  } else if (dedeActive && dedeAsabeFlag) {
+    addAsabe('asabe_dede', 'Dede', 'الجد الصحيح', 1, 1);
+  }
+
+  // Tam kardeşler (baba/dede yoksa, füru yoksa, dede mah. yoksa)
+  const kardesAktif = !babaHacbsKardes && !hasFuru && !(dedeMahcupsBiraderi && dedeActive);
+  if (kardesAktif && !shares['_dedeKardesOzel']) {
+    if (hasTamErk) {
+      const ck = hasTamKiz ? h.tamKizKardes : 0;
+      if (ck > 0) {
+        addAsabe('asabe_tamErk', 'Tam Erkek Kardeş', 'الأخ الشقيق', h.tamErkKardes, 2);
+        addAsabe('asabe_tamKiz', 'Tam Kız Kardeş', 'الأخت الشقيقة', ck, 1);
+      } else {
+        addAsabe('asabe_tamErk', 'Tam Erkek Kardeş', 'الأخ الشقيق', h.tamErkKardes, 1);
+      }
+    } else if (hasTamKiz && !hasTamErk) {
+      if (h.tamKizKardes === 1) addShare('tamKizK', 'Tam Kız Kardeş', 'الأخت الشقيقة', 1, 1, 2, 'furuz');
+      else addShare('tamKizKPl', 'Tam Kız Kardeşler', 'الأخوات الشقيقات', h.tamKizKardes, 2, 3, 'furuz');
+    }
+  }
+
+  // Baba bir kardeşler (tam erkek kardeş yoksa)
+  if (kardesAktif && !hasTamErk && !shares['_dedeKardesOzel']) {
+    if (hasBabaErk) {
+      const ck = hasBabaKiz ? h.babaBirKizKardes : 0;
+      if (ck > 0) {
+        addAsabe('asabe_babaErk', 'Baba Bir Erk. Kardeş', 'الأخ لأب', h.babaBirErkKardes, 2);
+        addAsabe('asabe_babaKiz', 'Baba Bir Kız Kardeş', 'الأخت لأب', ck, 1);
+      } else {
+        addAsabe('asabe_babaErk', 'Baba Bir Erk. Kardeş', 'الأخ لأب', h.babaBirErkKardes, 1);
+      }
+    } else if (hasBabaKiz && !hasBabaErk) {
+      // Tekmile: Tam kız ½ aldıysa, baba bir kız ⅙ ile tamamlar
+      const tamKizSahip = hasTamKiz && h.tamKizKardes === 1;
+      if (tamKizSahip) {
+        addShare('babaBirKizTekmile', 'Baba Bir Kız Kardeş', 'الأخت لأب', h.babaBirKizKardes, 1, 6, 'furuz');
+      } else if (!hasTamKiz) {
+        if (h.babaBirKizKardes === 1) addShare('babaBirKizK', 'Baba Bir Kız Kardeş', 'الأخت لأب', 1, 1, 2, 'furuz');
+        else addShare('babaBirKizKPl', 'Baba Bir Kız Kardeşler', 'الأخوات لأب', h.babaBirKizKardes, 2, 3, 'furuz');
+      }
+    }
+  }
+
+  // Amca
+  if (!yakinAsabeHacbsAmca && h.amca > 0) {
+    addAsabe('asabe_amca', 'Amca', 'العم', h.amca, 1);
+  }
+  if (!yakinAsabeHacbsAmca && !amcaHacbsAmcaOglu && h.amcaOglu > 0) {
+    addAsabe('asabe_amcaOglu', 'Amca Oğlu', 'ابن العم', h.amcaOglu, 1);
+  }
+
+  // Baba bir kız kardeş + Tam kız kardeşin asabe yapması (Hanefi değil, 3 mezhep)
+  // Bu durum: Tam kız 2/3 aldı, baba bir erkek kardeş var → asabe olarak girer
+  // (Zaten yukarıda asabe listesine eklendi)
+
+  // ==========================================================
+  // ASABE PAYINI DAĞ İT
+  // ==========================================================
+  delete shares['_dedeKardesOzel']; // temizle
+
+  let { num: fNum, den: fDen } = calcFuruzSum();
+
+  // Umariye düzeltmesi (anne bakiyenin 1/3'ünü alır)
+  if (shares['anne'] && shares['anne']._umariye) {
+    const spouseShare = (h.koca ? (hasFuru ? 1/4 : 1/2) : 0) + (h.kari ? (hasFuru ? 1/8 : 1/4) : 0);
+    const babaFurusN = shares['baba'] ? shares['baba'].n / shares['baba'].d : 0;
+    const remainder = 1 - spouseShare;
+    const anneUmariye = remainder / 3;
+    // LCM tabanlı: anne = anneUmariye
+    // Basit yaklaşım: anneyi eş sonrası kalanın 1/3'ü olarak ver
+    delete shares['anne'];
+    const spouseDen = h.koca ? (hasFuru ? 4 : 2) : 4;
+    const spouseNum = h.koca ? 1 : 1;
+    // Bakiyenin 1/3'ü: remainder/3 olarak ekle
+    // num/den formatında: bakiye = (spouseDen - spouseNum)/spouseDen → *1/3
+    const remN = spouseDen - spouseNum;
+    const remD = spouseDen;
+    shares['anne'] = { name: 'Anne', arabic: 'الأم', count: 1, n: remN, d: remD * 3, method: 'furuz' };
+    delete shares['anne']._umariye;
+  }
+
+  // Yeniden hesapla
+  ({ num: fNum, den: fDen } = calcFuruzSum());
+  let remaining = fDen - fNum;
+
+  // Asabe dağıt
+  if (asabeList.length > 0) {
+    // İlk grubu al (bazıları paired: erkek+kız)
+    const activeGroup = [];
+    let i = 0;
+    while (i < asabeList.length) {
+      activeGroup.push(asabeList[i]);
+      // Paired olup olmadığını kontrol et
+      if (i + 1 < asabeList.length) {
+        // Çift grupları: ogul+kiz, oo+ok, tamErk+tamKiz, babaErk+babaKiz
+        const pairs = [
+          ['asabe_ogul','asabe_kiz'],
+          ['asabe_oo','asabe_ok'],
+          ['asabe_tamErk','asabe_tamKiz'],
+          ['asabe_babaErk','asabe_babaKiz'],
+        ];
+        let paired = false;
+        for (const [k1, k2] of pairs) {
+          if (asabeList[i].key === k1 && asabeList[i+1].key === k2) {
+            activeGroup.push(asabeList[i+1]);
+            i += 2;
+            paired = true;
+            break;
+          }
+        }
+        if (!paired) { i++; }
+      } else { i++; }
+      break;
+    }
+
+    const totalWeight = activeGroup.reduce((s, a) => s + a.count * a.factor, 0);
+    if (totalWeight > 0 && remaining > 0) {
+      activeGroup.forEach(a => {
+        const rawN = remaining * a.count * a.factor;
+        const rawD = fDen * totalWeight;
+        const g = gcd(rawN, rawD);
+
+        if (a.key === 'asabe_baba' && shares['baba']) {
+          // Baba hem furuz hem asabe: topla
+          const existingN = shares['baba'].n * (rawD / shares['baba'].d);
+          const newN = existingN + rawN / g * (rawD / rawD);
+          // Daha temiz hesap
+          const bN = shares['baba'].n;
+          const bD = shares['baba'].d;
+          const combN = bN * fDen * totalWeight + remaining * a.count * a.factor;
+          const combD = bD * fDen * totalWeight;
+          const cg = gcd(combN, combD);
+          shares['baba'] = { ...shares['baba'], n: combN / cg, d: combD / cg, method: 'furuz+asabe' };
+        } else if (a.key === 'asabe_dede' && shares['dede']) {
+          const bN = shares['dede'].n;
+          const bD = shares['dede'].d;
+          const combN = bN * fDen * totalWeight + remaining * a.count * a.factor;
+          const combD = bD * fDen * totalWeight;
+          const cg = gcd(combN, combD);
+          shares['dede'] = { ...shares['dede'], n: combN / cg, d: combD / cg, method: 'furuz+asabe' };
+        } else {
+          shares[a.key] = { name: a.name, arabic: a.arabic, count: a.count, n: rawN / g, d: rawD / g, method: 'asabe' };
+        }
+      });
+    }
+  }
+
+  // DEDE + KARDEŞ: Mezhep farkı (Mâlikî/Şâfiî/Hanbelî)
+  const dedeKardesOzel = dedeActive && hasKardes && !hasFuru && !hasBaba && madhab !== 'hanefi';
+  if (dedeKardesOzel) {
+    // Dede kardeşlerle birlikte. Hanefî dışı: dede ahzıyla uşrub (en hayırlı pay)
+    // Aktif kardeşleri belirle
+    const kardesData = [];
+    if (hasTamErk && kardesAktif) kardesData.push({ key: 'asabe_tamErk', name: 'Tam Erk. Kardeş', arabic: 'الأخ الشقيق', count: h.tamErkKardes, factor: 2 });
+    if (hasTamKiz && kardesAktif) kardesData.push({ key: 'asabe_tamKiz', name: 'Tam Kız Kardeş', arabic: 'الأخت الشقيقة', count: h.tamKizKardes, factor: 1 });
+    if (hasBabaErk && !hasTamErk && kardesAktif) kardesData.push({ key: 'asabe_babaErk', name: 'Baba Bir Erk. Kardeş', arabic: 'الأخ لأب', count: h.babaBirErkKardes, factor: 2 });
+    if (hasBabaKiz && !hasTamErk && !hasBabaErk && kardesAktif) kardesData.push({ key: 'asabe_babaKiz', name: 'Baba Bir Kız Kardeş', arabic: 'الأخت لأب', count: h.babaBirKizKardes, factor: 1 });
+
+    const allWeight = kardesData.reduce((s, k) => s + k.count * k.factor, 0) + 1; // +1 dede için (2 pay = 1 erkek gibi)
+
+    // Furuz sonrası bakiye = fDen - fNum (eş vs furuz paylarından sonra)
+    ({ num: fNum, den: fDen } = calcFuruzSum());
+    const bakiye = fDen - fNum; // fDen üzerinden
+
+    // 3 seçenek:
+    // A) Mukaseme (kardeş gibi sayılırsa): bakiye * 2 / allWeight (dede erkek sayılır)
+    // B) Sülüs-ül baki (bakiyenin 1/3'ü)
+    // C) Sültayın (terekenin 1/6'sı) = fDen / 6
+
+    const optA_n = bakiye * 2; const optA_d = fDen * allWeight;
+    const optB_n = bakiye; const optB_d = fDen * 3;
+    const optC_n = 1; const optC_d = 6;
+
+    const optA = optA_n / optA_d;
+    const optB = optB_n / optB_d;
+    const optC = optC_n / optC_d;
+
+    const best = Math.max(optA, optB, optC);
+    let dedeFinalN, dedeFinalD;
+    let dedeMethod = 'asabe';
+    if (best === optA) { dedeFinalN = optA_n; dedeFinalD = optA_d; dedeMethod = 'asabe'; }
+    else if (best === optB) { dedeFinalN = optB_n; dedeFinalD = optB_d; dedeMethod = 'asabe'; }
+    else { dedeFinalN = optC_n; dedeFinalD = optC_d; dedeMethod = 'furuz'; }
+
+    const g = gcd(dedeFinalN, dedeFinalD);
+    shares['dede'] = { name: 'Dede', arabic: 'الجد الصحيح', count: 1, n: dedeFinalN / g, d: dedeFinalD / g, method: dedeMethod };
+
+    // Kardeşlere kalan: bakiye - dede payı
+    const dedeAldi_n = (dedeFinalN / g) * (fDen / (dedeFinalD / g));
+    const kardesKalan = bakiye - dedeAldi_n;
+
+    if (kardesKalan > 0 && kardesData.length > 0) {
+      const totalKardesW = kardesData.reduce((s, k) => s + k.count * k.factor, 0);
+      kardesData.forEach(k => {
+        const kN = kardesKalan * k.count * k.factor;
+        const kD = fDen * totalKardesW;
+        const kg = gcd(kN, kD);
+        shares[k.key] = { name: k.name, arabic: k.arabic, count: k.count, n: kN / kg, d: kD / kg, method: 'asabe' };
+      });
+    }
+  }
+
+  // ==========================================================
+  // RADD / AVL
+  // ==========================================================
+  let { num: totalN, den: totalD } = calcFuruzSum();
+
+  if (totalN > totalD) {
+    // AVL: Tüm mezheplerde uygulanır
+    adjustType = 'avl';
+    adjustMsg = `📈 Avl (Artırma) Uygulandı: Furuz payları toplamı (${totalN}/${totalD}) terekenin tamamını aştı. Tüm paylar oransal olarak azaltıldı.`;
+  } else if (totalN < totalD) {
+    const spouseKeys = ['koca', 'kari'];
+    const raddHakki = (madhab === 'hanefi' || madhab === 'hanbeli');
+    if (raddHakki) {
+      const raddables = Object.keys(shares).filter(k => !spouseKeys.includes(k) && shares[k].method !== 'asabe');
+      if (raddables.length > 0 && asabeList.length === 0 && !Object.keys(shares).some(k => shares[k].method === 'asabe')) {
+        adjustType = 'radd';
+        adjustMsg = `↩️ Radd (İade) Uygulandı (${madhab === 'hanefi' ? 'Hanefî' : 'Hanbelî'}): Kalan pay, furuz sahiplerine (eş hariç) oransal dağıtıldı.`;
+        const raddSum = raddables.reduce((s, k) => s + shares[k].n * (totalD / shares[k].d), 0);
+        const raddRem = totalD - totalN;
+        raddables.forEach(k => {
+          const myPart = shares[k].n * (totalD / shares[k].d);
+          const newN = myPart * totalD + raddRem * myPart;
+          const newD = totalD * raddSum;
+          // Kısalt
+          const g = gcd(newN, newD);
+          shares[k] = { ...shares[k], n: newN / g, d: newD / g, method: 'furuz+radd' };
+        });
+      }
+    } else if (madhab === 'maliki' || madhab === 'safii') {
+      adjustType = 'noradd';
+      adjustMsg = `🏛 Radd Uygulanmaz (${madhab === 'maliki' ? 'Mâlikî' : 'Şâfiî'}): Kalan oran beytülmâle (devlet hazinesine) devredilir.`;
+    }
+  }
+
+  return { shares, hacbedilen, adjustType, adjustMsg };
+}
+
+// ============================================================
+// HESAPLA (UI)
+// ============================================================
+async function hesapla() {
+  const estateVal = parseFloat(document.getElementById('estate').value);
+  if (!estateVal || estateVal <= 0) {
+    const inp = document.getElementById('estate');
+    inp.style.borderColor = 'rgba(220,80,80,0.6)';
+    inp.focus();
+    setTimeout(() => inp.style.borderColor = '', 2000);
+    return;
+  }
+
+  const funeralVal = parseFloat(document.getElementById('funeral').value) || 0;
+  const debtsVal   = parseFloat(document.getElementById('debts').value)   || 0;
+  const wasVal     = parseFloat(document.getElementById('wasiyya').value) || 0;
+  const currency   = document.getElementById('currency').value;
+
+  // Safi tereke hesabı
+  let safi = estateVal - funeralVal - debtsVal;
+  const maxWasiyya = safi * (1 / 3);
+  const actualWas = Math.min(wasVal, maxWasiyya);
+  safi -= actualWas;
+
+  if (safi <= 0) {
+    alert('Borçlar ve masraflar terekenin tamamını aştı. Dağıtılacak miras kalmadı.');
+    return;
+  }
+
+  const h = getHeirValues();
+  const heirCount = Object.values(h).reduce((s, v) => s + (v > 0 ? 1 : 0), 0);
+  if (heirCount === 0) {
+    alert('Lütfen en az bir mirasçı ekleyin.');
+    return;
+  }
+
+  const btn = document.getElementById('calcBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> &nbsp; HESAPLANIYOR...';
+
+  const { shares, hacbedilen, adjustType, adjustMsg } = hesaplaFeraiz(h, safi, currentMadhab);
+
+  // Sonuç kartını göster
+  const card = document.getElementById('resultsCard');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Meta
+  const madhabNames = { hanefi: 'Hanefî', maliki: 'Mâlikî', safii: 'Şâfiî', hanbeli: 'Hanbelî' };
+  document.getElementById('resSafi').textContent = formatMoney(safi, currency);
+  document.getElementById('resMadhab').textContent = madhabNames[currentMadhab];
+
+  // Hacb
+  const hacbNotice = document.getElementById('hacbNotice');
+  if (hacbedilen.length > 0) {
+    hacbNotice.style.display = 'flex';
+    document.getElementById('hacbList').textContent = ' ' + hacbedilen.join(', ');
+  } else {
+    hacbNotice.style.display = 'none';
+  }
+
+  // Adjustment
+  const adjEl = document.getElementById('adjNotice');
+  if (adjustMsg) {
+    adjEl.style.display = 'flex';
+    adjEl.className = 'adj-notice ' + (adjustType || '');
+    adjEl.textContent = adjustMsg;
+  } else {
+    adjEl.style.display = 'none';
+  }
+
+  // Shares render
+  const list = document.getElementById('resultsList');
+  list.innerHTML = '';
+
+  // Toplam hesapla
+  let finalDen = 1;
+  Object.values(shares).forEach(s => { finalDen = lcm(finalDen, s.d); });
+
+  let sumNum = 0;
+  Object.values(shares).forEach(s => { sumNum += s.n * (finalDen / s.d); });
+
+  let distributedTotal = 0;
+  const aiData = [];
+
+  for (const [key, s] of Object.entries(shares)) {
+    let amount;
+    if (adjustType === 'avl') {
+      amount = safi * (s.n / s.d) / (sumNum / finalDen);
+    } else {
+      amount = safi * (s.n / s.d);
+    }
+    distributedTotal += amount;
+    const pct = adjustType === 'avl'
+      ? ((s.n / s.d) / (sumNum / finalDen)) * 100
+      : (s.n / s.d) * 100;
+
+    const fracDisp = adjustType === 'avl'
+      ? '≈' + pct.toFixed(1) + '%'
+      : fractionStr(s.n, s.d);
+
+    const methodBadgeMap = {
+      'furuz': '<span class="rbadge farz">Farz</span>',
+      'asabe': '<span class="rbadge asabe">Asabe</span>',
+      'furuz+asabe': '<span class="rbadge combo">Farz+Asabe</span>',
+      'furuz+radd': '<span class="rbadge radd">Farz+Radd</span>',
+    };
+    const badge = methodBadgeMap[s.method] || '';
+    const cntTxt = s.count > 1 ? s.count + ' kişi' : '';
+
+    const row = document.createElement('div');
+    row.className = 'heir-result';
+    row.innerHTML = `
+      <div class="rname">
+        <strong>${s.name} ${badge}</strong>
+        <small>${s.arabic}</small>
+      </div>
+      ${cntTxt ? `<span class="rcount">${cntTxt}</span>` : ''}
+      <span class="rfraction">${fracDisp}</span>
+      <div class="rbar"><div class="rbar-fill" data-pct="${Math.min(pct, 100)}"></div></div>
+      <span class="ramount">${formatMoney(amount, currency)}</span>
+    `;
+    list.appendChild(row);
+    aiData.push({ name: s.name, count: s.count, frac: fracDisp, amount: formatMoney(amount, currency), method: s.method });
+  }
+
+  document.getElementById('resTotal').textContent = formatMoney(distributedTotal, currency);
+
+  // Bar animasyonu
+  setTimeout(() => {
+    document.querySelectorAll('.rbar-fill').forEach(b => {
+      b.style.width = b.dataset.pct + '%';
+    });
+  }, 120);
+
+  btn.disabled = false;
+  btn.innerHTML = '⚖&nbsp;&nbsp;MİRASI HESAPLA';
+
+  // AI açıklaması
+  await getAIExplanation(h, aiData, safi, currency, hacbedilen, adjustType, currentMadhab, {
+    brut: estateVal, cenaze: funeralVal, borclar: debtsVal, vasiyet: actualWas
+  });
+}
+
+// ============================================================
+// CLAUDE API - AÇIKLAMA
+// ============================================================
+async function getAIExplanation(heirs, results, safi, currency, hacbedilen, adjustType, madhab, terekedDetay) {
+  const aiBox = document.getElementById('aiBox');
+  const spinner = document.getElementById('aiSpinner');
+  aiBox.innerHTML = '<span class="cursor"></span>';
+  spinner.style.display = 'inline-block';
+
+  const madhabNames = { hanefi: 'Hanefî', maliki: 'Mâlikî', safii: 'Şâfiî', hanbeli: 'Hanbelî' };
+
+  const prompt = `Sen bir feraiz ve İslam miras hukuku uzmanısın. Aşağıdaki hesaplamayı ${madhabNames[madhab]} mezhebine göre Türkçe olarak açıkla.
+
+TEREKE:
+- Brüt varlık: ${currency}${terekedDetay.brut.toLocaleString('tr-TR')}
+- Cenaze masrafı: ${currency}${terekedDetay.cenaze.toLocaleString('tr-TR')}
+- Borçlar: ${currency}${terekedDetay.borclar.toLocaleString('tr-TR')}
+- Vasiyyet: ${currency}${terekedDetay.vasiyet.toLocaleString('tr-TR')}
+- Safi tereke: ${currency}${safi.toLocaleString('tr-TR')}
+
+MEZHEP: ${madhabNames[madhab]}
+
+SONUÇLAR:
+${results.map(r => `• ${r.name} (${r.count} kişi): ${r.frac} = ${r.amount} [${r.method}]`).join('\n')}
+${hacbedilen.length > 0 ? '\nMAHCUP EDİLENLER: ' + hacbedilen.join(', ') : ''}
+${adjustType === 'avl' ? '\nAVL uygulandı.' : ''}
+${adjustType === 'radd' ? '\nRADD uygulandı.' : ''}
+${adjustType === 'noradd' ? '\nRadd uygulanmadı (beytülmâle).' : ''}
+
+Lütfen:
+1. Her mirasçının bu payı alma gerekçesini mezhep hükmü ve Kur'an/Sünnet dayanağıyla açıkla
+2. Varsa mezhep farkının hesaba etkisini belirt
+3. Hacb, avl veya radd varsa açıkla
+4. Sade, akıcı paragraflarla yaz. 4 paragrafı geçme.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(c => c.text || '').join('') || 'Açıklama alınamadı.';
+    spinner.style.display = 'none';
+    typeWriter(aiBox, text);
+  } catch (e) {
+    spinner.style.display = 'none';
+    aiBox.innerHTML = '<em style="color:var(--text-3)">Yapay zeka açıklaması şu anda kullanılamıyor. Lütfen hesaplama sonuçlarını inceleyiniz.</em>';
+  }
+}
+
+function typeWriter(el, text, speed = 10) {
+  let i = 0;
+  el.innerHTML = '';
+  const iv = setInterval(() => {
+    if (i < text.length) {
+      el.innerHTML = text.substring(0, ++i).replace(/\n/g, '<br>');
+    } else {
+      clearInterval(iv);
+    }
+  }, speed);
+}
+
+// ============================================================
+// RESET
+// ============================================================
+function resetForm() {
+  document.querySelectorAll('.heir-card').forEach(card => card.classList.remove('active'));
+  ['estate','funeral','debts','wasiyya'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('resultsCard').style.display = 'none';
+  document.getElementById('resultsList').innerHTML = '';
+  document.getElementById('hacbNotice').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Başlangıç cinsiyet kontrolü
+updateSpouseVisibility();
+</script>
+</body>
+</html>
